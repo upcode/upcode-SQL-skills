@@ -76,12 +76,62 @@ Austin|Mini Cooper|1964
 
 -- 4. Select the model name, brand name, and headquarters for the Ford Mustang
 --    from the Models and Brands tables.
+SELECT brand_name, Models.name, headquarters
+FROM Models
+INNER JOIN Brands
+ON Models.brand_name = Brands.name
+WHERE Models.name = 'Mustang';
+
+sqlite> SELECT brand_name, Models.name, headquarters
+   ...> FROM Models
+   ...> INNER JOIN Brands
+   ...> ON Models.brand_name = Brands.name
+   ...> WHERE Models.name = 'Mustang';
+brand_name  name        headquarters
+----------  ----------  ------------
+Ford        Mustang     Dearborn, MI
 
 -- 5. Select all rows for the three oldest brands
 --    from the Brands table (Hint: you can use LIMIT and ORDER BY).
+SELECT founded, name
+FROM Brands
+ORDER BY founded DESC
+LIMIT 3;
+
+OUTPUT:
+sqlite> SELECT founded, name
+   ...> FROM Brands
+   ...> ORDER BY founded DESC
+   ...> LIMIT 3;
+2003|Tesla
+1954|Fairthorpe
+1928|Plymouth
+
 
 -- 6. Count the Ford models in the database (output should be a number).
+-- SELECT COUNT(brand_name)
+-- FROM Models;
+-- SELECT COUNT(name)
+-- FROM Brands;
+-- sqlite> SELECT COUNT(brand_name)
+--    ...> FROM Models;
+-- 48
+-- sqlite> SELECT COUNT(name)
+--    ...> FROM Brands;
+-- 15
 
+SECOND TRY:
+SELECT COUNT(brand_name)
+FROM Models
+WHERE brand_name = 'Ford';
+
+OUTPUT:
+sqlite> SELECT COUNT(brand_name)
+   ...> FROM Models
+   ...> WHERE brand_name = 'Ford';
+COUNT(brand_name)
+-----------------
+6
 -- 7. Select the name of any and all car brands that are not discontinued.
 
 -- 8. Select rows 15-25 of the DB in alphabetical order by model name.
