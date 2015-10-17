@@ -133,8 +133,66 @@ COUNT(brand_name)
 -----------------
 6
 -- 7. Select the name of any and all car brands that are not discontinued.
+-- SELECT Brands.name
+-- FROM Brands
+-- LEFT JOIN Models
+-- ON Brands.name = Models.brand_name
+-- WHERE Brands.name <> discountinuded;
+
+-- SELECT brand_name, Models.name, discountinuded
+-- FROM Models
+-- INNER JOIN Brands
+-- ON Models.brand_name = Brands.name
+-- WHERE Models.name = 'discountinuded';
+
+-- SELECT name
+-- FROM Brands
+-- WHERE name <> discontinued;
+-- NOT IN (SELECT discontinued FROM Brands);
+
+OUTPUT:
+SELECT name
+FROM Brands
+WHERE name <> Brands.discontinued;
+
+sqlite> SELECT name
+   ...> FROM Brands
+   ...> WHERE name <> Brands.discontinued;
+name
+----------
+Hillman
+Austin
+Fairthorpe
+Studebaker
+Pontiac
+Rambler
+Plymouth
+
 
 -- 8. Select rows 15-25 of the DB in alphabetical order by model name.
+SELECT id, year, brand_name, name
+FROM Models
+ORDER BY name ASC
+LIMIT 11 OFFSET 14;
+
+OUTPUT:
+sqlite> SELECT id, year, brand_name, name
+   ...> FROM Models
+   ...> ORDER BY name ASC
+   ...> LIMIT 11 OFFSET 14;
+id          year        brand_name  name
+----------  ----------  ----------  ----------
+8           1955        Chevrolet   Corvette
+10          1956        Chevrolet   Corvette
+11          1957        Chevrolet   Corvette
+13          1958        Chevrolet   Corvette
+17          1959        Chevrolet   Corvette
+20          1960        Chevrolet   Corvette
+26          1961        Chevrolet   Corvette
+28          1962        Chevrolet   Corvette
+38          1963        Chevrolet   Corvette
+39          1964        Chevrolet   Corvette
+34          1963        Ford        E-Series
 
 -- 9. Select the brand, name, and year the model's brand was
 --    founded for all of the models from 1960. Include row(s)
@@ -142,7 +200,33 @@ COUNT(brand_name)
 --    (The year the brand was founded should be NULL if
 --    the brand is not in the Brands table.)
 
+-- SELECT Models.year, Models.brand_name, Models.name
+-- FROM Models
+-- LEFT JOIN Brands
+-- ON Models.year = Brands.founded
+-- WHERE Brands.name <> founded is null
+-- AND (year = 1960 or Brands.name <> founded is null);
 
+
+SELECT Brands.name, Models.name, brand_name, year, founded
+FROM Models
+LEFT JOIN Brands
+ON Brands.name = Models.brand_name
+WHERE Models.year = 1960;
+
+OUTPUT:
+
+sqlite> SELECT Brands.name, Models.name, brand_name, year, founded
+   ...> FROM Models
+   ...> LEFT JOIN Brands
+   ...> ON Brands.name = Models.brand_name
+   ...> WHERE Models.year = 1960;
+name        name        brand_name  year        founded
+----------  ----------  ----------  ----------  ----------
+Chevrolet   Corvair     Chevrolet   1960        1911
+Chevrolet   Corvette    Chevrolet   1960        1911
+            Fillmore    Fillmore    1960
+Fairthorpe  Rockette    Fairthorpe  1960        1954
 
 -- Part 2: Change the following queries according to the specifications.
 -- Include the answers to the follow up questions in a comment below your
