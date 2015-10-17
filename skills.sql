@@ -1,22 +1,5 @@
 -- Note: Please consult the directions for this assignment
 -- for the most explanatory version of each question.
-
-CREATE TABLE Models (
-    id INTEGER PRIMARY KEY,
-    year INT(4) NOT NULL,
-    brand_name VARCHAR(50) NULL,
-    name VARCHAR(50) NOT NULL
-);
-
-CREATE TABLE Brands (
-    id INTEGER PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
-    founded INT(4),
-    headquarters VARCHAR(50),
-    discontinued INT(4)
-);
-
-
 -- 1. Select all columns for all brands in the Brands table.
 SELECT * FROM Brands;
 
@@ -235,48 +218,205 @@ Fairthorpe  Rockette    Fairthorpe  1960        1954
 -- 1. Modify this query so it shows all brands that are not discontinued
 -- regardless of whether they have any models in the models table.
 -- before:
-    -- SELECT b.name,
-    --        b.founded,
-    --        m.name
-    -- FROM Model AS m
-    --   LEFT JOIN brands AS b
-    --     ON b.name = m.brand_name
-    -- WHERE b.discontinued IS NULL;
+    SELECT Brands.name,
+           Brands.founded,
+           Models.name
+    FROM Brands
+      LEFT JOIN Models
+        ON Brands.name = Models.brand_name
+    WHERE Brands.discontinued IS NULL;
+
+OUTPUT:
+    sqlite>     SELECT Brands.name,
+   ...>            Brands.founded,
+   ...>            Models.name
+   ...>     FROM Brands
+   ...>       LEFT JOIN Models
+   ...>         ON Brands.name = Models.brand_name
+   ...>     WHERE Brands.discontinued IS NULL;
+name        founded     name
+----------  ----------  ----------
+Ford        1903        E-Series
+Ford        1903        Galaxie
+Ford        1903        Model T
+Ford        1903        Mustang
+Ford        1903        Thunderbir
+Ford        1903        Thunderbir
+Chrysler    1925        Imperial
+Citroën    1919        2CV
+Chevrolet   1911        Corvair
+Chevrolet   1911        Corvair 50
+Chevrolet   1911        Corvette
+Chevrolet   1911        Corvette
+Chevrolet   1911        Corvette
+Chevrolet   1911        Corvette
+Chevrolet   1911        Corvette
+Chevrolet   1911        Corvette
+Chevrolet   1911        Corvette
+Chevrolet   1911        Corvette
+Chevrolet   1911        Corvette
+Chevrolet   1911        Corvette
+Chevrolet   1911        Corvette
+Chevrolet   1911        Corvette
+Cadillac    1902        Fleetwood
+BMW         1916        600
+BMW         1916        600
+BMW         1916        600
+Buick       1903        Special
+Tesla       2003
 
 -- 2. Modify this left join so it only selects models that have brands in the Brands table.
 -- before:
-    -- SELECT m.name,
-    --        m.brand_name,
-    --        b.founded
-    -- FROM Models AS m
-    --   LEFT JOIN Brands AS b
-    --     ON b.name = m.brand_name;
+    SELECT Models.name,
+           Models.brand_name,
+           Brands.founded,
+           Brands.name
+    FROM Brands
+      LEFT JOIN Models
+        ON Brands.name = Models.brand_name;
+
+    sqlite>     SELECT Models.name,
+   ...>            Models.brand_name,
+   ...>            Brands.founded,
+   ...>            Brands.name
+   ...>     FROM Brands
+   ...>       LEFT JOIN Models
+   ...>         ON Brands.name = Models.brand_name;
+name        brand_name  founded     name
+----------  ----------  ----------  ----------
+E-Series    Ford        1903        Ford
+Galaxie     Ford        1903        Ford
+Model T     Ford        1903        Ford
+Mustang     Ford        1903        Ford
+Thunderbir  Ford        1903        Ford
+Thunderbir  Ford        1903        Ford
+Imperial    Chrysler    1925        Chrysler
+2CV         Citroën    1919        Citroën
+Minx Magni  Hillman     1907        Hillman
+Corvair     Chevrolet   1911        Chevrolet
+Corvair 50  Chevrolet   1911        Chevrolet
+Corvette    Chevrolet   1911        Chevrolet
+Corvette    Chevrolet   1911        Chevrolet
+Corvette    Chevrolet   1911        Chevrolet
+Corvette    Chevrolet   1911        Chevrolet
+Corvette    Chevrolet   1911        Chevrolet
+Corvette    Chevrolet   1911        Chevrolet
+Corvette    Chevrolet   1911        Chevrolet
+Corvette    Chevrolet   1911        Chevrolet
+Corvette    Chevrolet   1911        Chevrolet
+Corvette    Chevrolet   1911        Chevrolet
+Corvette    Chevrolet   1911        Chevrolet
+Corvette    Chevrolet   1911        Chevrolet
+Fleetwood   Cadillac    1902        Cadillac
+600         BMW         1916        BMW
+600         BMW         1916        BMW
+600         BMW         1916        BMW
+Mini        Austin      1905        Austin
+Mini        Austin      1905        Austin
+Mini Coope  Austin      1905        Austin
+Mini Coope  Austin      1905        Austin
+Mini Coope  Austin      1905        Austin
+Rockette    Fairthorpe  1954        Fairthorpe
+Avanti      Studebaker  1852        Studebaker
+Avanti      Studebaker  1852        Studebaker
+Avanti      Studebaker  1852        Studebaker
+Avanti      Studebaker  1852        Studebaker
+Bonneville  Pontiac     1926        Pontiac
+GTO         Pontiac     1926        Pontiac
+Grand Prix  Pontiac     1926        Pontiac
+Grand Prix  Pontiac     1926        Pontiac
+Grand Prix  Pontiac     1926        Pontiac
+LeMans      Pontiac     1926        Pontiac
+Tempest     Pontiac     1926        Pontiac
+Special     Buick       1903        Buick
+Classic     Rambler     1901        Rambler
+Fury        Plymouth    1928        Plymouth
+                        2003        Tesla
 
 -- followup question: In your own words, describe the difference between
 -- left joins and inner joins.
+# an inner join is all the contents of table 1 and tabl2 that have items in common
+# left join all contents from table one that excludes items that are in common in table 2
 
 -- 3. Modify the query so that it only selects brands that don't have any models in the models table.
 -- (Hint: it should only show Tesla's row.)
 -- before:
-    -- SELECT name,
-    --        founded
+    -- SELECT founded,
+    --     Models.brand_name,
+    --     Models.name,
+    --     Brands.name,
     -- FROM Brands
     --   LEFT JOIN Models
     --     ON brands.name = Models.brand_name
-    -- WHERE Models.year > 1940;
+    -- WHERE founded > 1940;
+
+    SELECT founded,
+    Brands.name,
+    Models.brand_name
+    FROM Brands
+    LEFT JOIN Models
+    ON Brands.name = Models.brand_name
+    WHERE founded > 1954;
+
+    sqlite>  SELECT founded,
+   ...>     Brands.name,
+   ...>     Models.brand_name
+   ...>     FROM Brands
+   ...>     LEFT JOIN Models
+   ...>     ON Brands.name = Models.brand_name
+   ...>     WHERE founded > 1954;
+founded     name        brand_name
+----------  ----------  ----------
+2003        Tesla
 
 -- 4. Modify the query to add another column to the results to show
 -- the number of years from the year of the model until the brand becomes discontinued
 -- Display this column with the name years_until_brand_discontinued.
 -- before:
-    -- SELECT b.name,
-    --        m.name,
-    --        m.year,
-    --        b.discontinued
-    -- FROM Models AS m
-    --   LEFT JOIN brands AS b
-    --     ON m.brand_name = b.name
-    -- WHERE b.discontinued NOT NULL;
+    SELECT
+        Models.name,
+        Models.year,
+        Models.brand_name,
+        Brands.name,
+        Brands.discontinued AS discontinued
+    FROM Models
+      LEFT JOIN Brands
+        ON Models.brand_name = Brands.name
+    WHERE founded = Brands.discontinued NOT NULL;
+
+
+    sqlite>     SELECT
+   ...>         Models.name,
+   ...>         Models.year,
+   ...>         Models.brand_name,
+   ...>         Brands.name,
+   ...>         Brands.discontinued AS discontinued
+   ...>     FROM Models
+   ...>       LEFT JOIN Brands
+   ...>         ON Models.brand_name = Brands.name
+   ...>     WHERE founded = Brands.discontinued NOT NULL;
+name              year        brand_name  name        discontinued
+----------------  ----------  ----------  ----------  ------------
+Minx Magnificent  1950        Hillman     Hillman     1981
+Mini              1959        Austin      Austin      1987
+Rockette          1960        Fairthorpe  Fairthorpe  1976
+Mini Cooper       1961        Austin      Austin      1987
+Avanti            1961        Studebaker  Studebaker  1967
+Tempest           1961        Pontiac     Pontiac     2010
+Grand Prix        1962        Pontiac     Pontiac     2010
+Avanti            1962        Studebaker  Studebaker  1967
+Mini              1963        Austin      Austin      1987
+Mini Cooper S     1963        Austin      Austin      1987
+Classic           1963        Rambler     Rambler     1969
+Avanti            1963        Studebaker  Studebaker  1967
+Grand Prix        1963        Pontiac     Pontiac     2010
+GTO               1964        Pontiac     Pontiac     2010
+LeMans            1964        Pontiac     Pontiac     2010
+Bonneville        1964        Pontiac     Pontiac     2010
+Grand Prix        1964        Pontiac     Pontiac     2010
+Fury              1964        Plymouth    Plymouth    2001
+Avanti            1964        Studebaker  Studebaker  1967
+Mini Cooper       1964        Austin      Austin      1987
 
 
 
